@@ -57,6 +57,7 @@ Before deleting the service, scale down tasks to zero:
 7. Wait for all tasks to be stopped
 
 **Why scale to zero first?**
+
 - Ensures all load balancers are disconnected
 - Clean shutdown of containers
 - Prevents errors during deletion
@@ -72,6 +73,7 @@ Once all tasks are stopped:
 5. Wait for deletion to complete (1-2 minutes)
 
 **What gets deleted automatically:**
+
 - Service configuration
 - Load Balancer (if created with service)
 - Target Group
@@ -244,6 +246,7 @@ Most resources CAN be recovered if deleted recently:
 **Load Balancers:** Can recreate and reconfigure
 
 **Best Practice:** Always use version control for:
+
 - Task definition JSON
 - Service configurations
 - Infrastructure as Code (CloudFormation/Terraform)
@@ -283,7 +286,7 @@ For development/learning:
 - **Weekly**: Clean up unused resources
 - **Monthly**: Review AWS billing
 
-## Summary
+## Key-takeaways
 
 Proper cleanup:
 

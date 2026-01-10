@@ -33,6 +33,7 @@ Timeout: 5 seconds
 ### Issue 1: curl Not Installed
 
 **Symptom:**
+
 ```
 Error: command not found: curl
 ```
@@ -72,6 +73,7 @@ RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 ### Issue 2: Health Endpoint Missing
 
 **Symptom:**
+
 ```
 Received HTTP 404 Not Found
 Task marked unhealthy
@@ -87,8 +89,8 @@ Add a health check endpoint to your application:
 **Node.js/Express:**
 
 ```javascript
-app.get('/health', (req, res) => {
-  res.json({ status: 'healthy' });
+app.get("/health", (req, res) => {
+  res.json({ status: "healthy" });
 });
 ```
 
@@ -121,6 +123,7 @@ public ResponseEntity<Map<String, String>> health() {
 ### Issue 3: Wrong Port in Health Check
 
 **Symptom:**
+
 ```
 Connection refused on port 8000
 ```
@@ -153,6 +156,7 @@ app.listen(PORT, () => {
 ### Issue 4: Health Check Timeout Too Short
 
 **Symptom:**
+
 ```
 Health check timeout reached (5 seconds)
 ```
@@ -174,6 +178,7 @@ Health Check:
 ### Issue 5: Firewall/Security Group Blocking
 
 **Symptom:**
+
 ```
 Connection timeout on health check
 ```
@@ -201,6 +206,7 @@ aws logs tail /ecs/api-app --follow
 ```
 
 Look for errors like:
+
 - "curl: command not found"
 - "Connection refused"
 - "503 Service Unavailable"
@@ -289,22 +295,22 @@ CMD ["node", "server.js"]
 
 ```javascript
 // server.js
-const express = require('express');
+const express = require("express");
 const app = express();
 
-app.get('/health', (req, res) => {
-  res.status(200).json({ 
-    status: 'healthy',
-    timestamp: new Date().toISOString()
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "healthy",
+    timestamp: new Date().toISOString(),
   });
 });
 
-app.get('/api/data', (req, res) => {
-  res.json({ data: 'your data' });
+app.get("/api/data", (req, res) => {
+  res.json({ data: "your data" });
 });
 
 app.listen(8000, () => {
-  console.log('Server running on port 8000');
+  console.log("Server running on port 8000");
 });
 ```
 
@@ -315,7 +321,7 @@ Health Check:
   Command:
     - CMD-SHELL
     - curl -f http://localhost:8000/health || exit 1
-  
+
   Interval: 30 seconds
   Timeout: 5 seconds
   Start Period: 30 seconds
@@ -323,6 +329,7 @@ Health Check:
 ```
 
 **What this means:**
+
 - Wait 30 seconds after container start
 - Every 30 seconds, run health check
 - Allow 5 seconds for response
@@ -361,18 +368,18 @@ Endpoint to check if app is truly ready:
 ```javascript
 let isReady = false;
 
-app.get('/health/ready', (req, res) => {
+app.get("/health/ready", (req, res) => {
   if (!isReady) {
-    res.status(503).json({ status: 'not ready' });
+    res.status(503).json({ status: "not ready" });
     return;
   }
-  res.json({ status: 'ready' });
+  res.json({ status: "ready" });
 });
 
 // After database connection, cache warmup, etc
 setTimeout(() => {
   isReady = true;
-  console.log('Application is ready for traffic');
+  console.log("Application is ready for traffic");
 }, 5000);
 ```
 
@@ -381,8 +388,8 @@ setTimeout(() => {
 Endpoint to check if app is still running:
 
 ```javascript
-app.get('/health/live', (req, res) => {
-  res.json({ status: 'alive' });
+app.get("/health/live", (req, res) => {
+  res.json({ status: "alive" });
 });
 ```
 
@@ -404,7 +411,7 @@ Health Check:
 6. **Monitor logs** for actual error messages
 7. **Don't hardcode localhost** - use environment variables for port
 
-## Summary
+## Key-takeaways
 
 Health check failures usually stem from:
 
